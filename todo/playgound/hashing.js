@@ -1,25 +1,53 @@
 const { SHA256 } = require("crypto-js");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
-var message = "hello world";
-var hash = SHA256(message).toString();
+var password = "123abc!";
 
-console.log(hash);
+bcrypt.genSalt(10, (err, salt) => {
+  bcrypt.hash(password, salt, (err, hash) => {
+    console.log(hash);
+  });
+});
 
-var data = {
-  id: 4
-};
+bcrypt.compare(
+  password,
+  "$2a$10$B8lxO.Y1/uwfT6XNmsoHH.zTlgQczUKuZwrE8PDxTd8ME/PJBM6tS",
+  (err, res) => {
+    console.log(res);
+  }
+);
 
-var token = {
-  data,
-  hash: SHA256(JSON.stringify(data) + "someSecret").toString()
-};
+// var data = {
+//   id: 10
+// };
 
-token.data.id = 5;
-token.hash = SHA256(JSON.stringify(token.data) + "somesecret").toString();
-var resultHash = SHA256(JSON.stringify(data) + "someSecret").toString();
+// var token = jwt.sign(data, "hello");
+// console.log(token);
 
-if (resultHash === token.hash) {
-  console.log("Secure data");
-} else {
-  console.log("Data may be changed!");
-}
+// var decoded = jwt.verify(token, "hello");
+// console.log(decoded);
+
+// var message = "hello world";
+// var hash = SHA256(message).toString();
+
+// console.log(hash);
+
+// var data = {
+//   id: 4
+// };
+
+// var token = {
+//   data,
+//   hash: SHA256(JSON.stringify(data) + "someSecret").toString()
+// };
+
+// token.data.id = 5;
+// token.hash = SHA256(JSON.stringify(token.data) + "somesecret").toString();
+// var resultHash = SHA256(JSON.stringify(data) + "someSecret").toString();
+
+// if (resultHash === token.hash) {
+//   console.log("Secure data");
+// } else {
+//   console.log("Data may be changed!");
+// }
